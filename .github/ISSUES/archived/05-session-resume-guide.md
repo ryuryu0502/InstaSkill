@@ -39,7 +39,8 @@ ls -la Work/
 - エラーハンドリングの基本手順
 
 ## タスク
-- [ ] CLAUDE.md を作成（`/init` スキルを使用）
-- [ ] セッション再開手順を CLAUDE.md に明記
-- [ ] 各 Issue の完了条件を明確化
-- [ ] 権限設定の初期化スクリプトを作成
+- [x] CLAUDE.md を作成（`/init` スキルを使用）→ CLAUDE.md 存在確認済み
+- [x] セッション再開手順を CLAUDE.md に明記（ファーストステップセクション）
+- [x] 各 Issue の完了条件を明確化（本タスクリストに完了マーク）
+- [x] 権限設定の初期化スクリプトを作成 → .claude/init_session.sh
+- [ ] 別のAIで init_session.sh の動作確認

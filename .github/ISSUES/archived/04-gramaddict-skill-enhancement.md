@@ -42,7 +42,8 @@ gramaddict スキル (`SKILL.md`) は非常に高品質。日本語完全対応�
 ```
 
 ## タスク
-- [ ] テンプレートファイルを同梱
-- [ ] バージョンチェック機構を追加
-- [ ] 不足情報を補完
-- [ ] エラーパターンの継続的収集
+- [x] テンプレートファイルを同梱 → .claude/skills/gramaddict/templates/ (config.yml, filters.yml, comments_list.txt)
+- [x] バージョンチェック機構を追加 → .claude/skills/gramaddict/scripts/check_version.sh
+- [x] 不足情報を補完 → SKILL.md（代替OSS比較、エミュレータ日本語設定、エラーパターン）
+- [x] エラーパターンの継続的収集 → SKILL.md に13パターンを追加
+- [ ] pip3 show gramaddict でバージョンを確認して SKILL.md を最新に更新

@@ -51,6 +51,7 @@
 3. GramAddict 調査に必要な WebFetch 権限
 
 ## タスク
-- [ ] 汎用権限と専用権限を分離
-- [ ] セッション再開手順を CLAUDE.md に明記
-- [ ] `ask` リストで危険操作を明示
+- [x] 汎用権限と専用権限を分離 → .claude/settings.local.json（allow/ask 分割済み）
+- [x] セッション再開手順を CLAUDE.md に明記（`設定手順` セクション）
+- [x] `ask` リストで危険操作を明示（sudo, adb, kill 等を登録済み）
+- [ ] 別のAIで設定の動作確認

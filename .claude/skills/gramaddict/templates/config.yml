@@ -1,0 +1,68 @@
+# ============================================================
+# GramAddict 設定テンプレート (安全設定 推奨)
+# 使用方法: accounts/<username>/config.yml として保存
+# 詳細: https://docs.gramaddict.org/#/configuration
+# ============================================================
+
+# === アカウント設定 ===
+username: your_instagram_username
+device: null                    # 複数デバイス時はADBデバイスIDを指定
+app-id: com.instagram.android
+allow-untested-ig-version: false
+screen-sleep: true
+speed-multiplier: 1
+close-apps: false               # Termux では false 必須
+restart-atx-agent: true         # 安定性向上
+shuffle-jobs: true              # ジョブ順をランダム化
+truncate-sources: 2-5           # ソース数を制限
+
+# === インタラクションソース（少なくとも1つ有効に） ===
+# ハッシュタグ（人気投稿 -> 投稿者にインタラクション）
+hashtag-posts-top: [ travel, photography, food ]
+# ハッシュタグ（人気投稿 -> いいねユーザーにインタラクション）
+# hashtag-likers-top: [ travel, photography ]
+# ブロガーのフォロワー（ターゲット指定）
+# blogger-followers: [ target_username1, target_username2 ]
+# 自分のフィード（数値 = 処理する最大投稿数）
+# feed: 2-5
+
+# === インタラクション設定 ===
+interactions-count: 30-40       # 1ソースあたりの最大インタラクション数
+likes-count: 1-2                # ユーザーあたりのいいね数
+likes-percentage: 100           # プロフィール閲覧時のいいね率(%)
+stories-count: 1-2              # ユーザーあたりのストーリー視聴数
+stories-percentage: 30-40       # ストーリー視聴率(%)
+carousel-count: 2-3             # カルーセル投稿の処理数
+carousel-percentage: 60-70      # カルーセル処理率(%)
+max-comments-pro-user: 1-2      # ユーザーあたりの最大コメント数
+interact-percentage: 30-40      # プロフィール操作率(%)
+follow-percentage: 30-40        # フォロー率(%)
+follow-limit: 50                # 1セッションの最大フォロー数
+skipped-list-limit: 10-15       # スキップユーザーの記録上限
+
+# === 閲覧時間 ===
+watch-video-time: 15-35         # 動画視聴時間(秒)
+watch-photo-time: 3-4           # 写真視聴時間(秒)
+
+# === アンフォロー設定 ===
+unfollow-non-followers: 10-20   # 非相互フォローのみアンフォロー
+unfollow-delay: 15              # アンフォロー間の遅延(秒)
+
+# === セッション総制限（安全マージン） ===
+total-likes-limit: 120-150
+total-follows-limit: 40-50
+total-unfollows-limit: 40-50
+total-watches-limit: 120-150
+total-successful-interactions-limit: 120-150
+total-interactions-limit: 280-300
+
+# === セッション終了条件 ===
+end-if-likes-limit-reached: true
+end-if-follows-limit-reached: false
+end-if-watches-limit-reached: false
+
+# === スケジューリング ===
+working-hours: [10.15-16.40, 18.15-22.46]
+time-delta: 10-15               # 開始時間のランダム幅(分)
+repeat: 280-320                 # サイクル間隔(分)
+total-sessions: -1              # -1 = 無制限（繰り返し実行）

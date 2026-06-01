@@ -18,14 +18,14 @@ GramAddict Instagram 自動化ボットの完全調査レポート & Claude Code
 git status
 git log --oneline -5
 
-# 2. 未解決Issue確認
-ls .github/ISSUES/
-
-# 3. 権限設定確認
+# 2. 権限設定確認
 cat .claude/settings.local.json
 
-# 4. 最新の作業内容確認
-ls -la Work/ | tail -10
+# 3. セッション初期化（推奨）
+bash .claude/init_session.sh
+
+# 4. GitHub Issues 確認（ブラウザで）
+#    https://github.com/ryuryu0502/InstaSkill/issues
 ```
 
 ## ディレクトリ構造
@@ -33,13 +33,21 @@ ls -la Work/ | tail -10
 ```
 /
 ├── .claude/
-│   ├── settings.local.json    # ローカル権限設定（git管理外）
+│   ├── settings.local.json       # ローカル権限設定（git管理外）
+│   ├── init_session.sh           # セッション再開初期化スクリプト
 │   └── skills/
 │       └── gramaddict/
-│           └── SKILL.md       # GramAddict スキル定義
+│           ├── SKILL.md          # GramAddict スキル定義
+│           ├── templates/        # 設定テンプレート
+│           │   ├── config.yml
+│           │   ├── filters.yml
+│           │   └── comments_list.txt
+│           └── scripts/
+│               └── check_version.sh  # バージョン確認
 ├── .github/
-│   └── ISSUES/                # GitHub Issue 草案（マークダウン）
-├── Work/                      # 調査レポート
+│   └── ISSUES/
+│       └── archived/            # GitHub Issue 草案（登録済み）
+├── Work/                        # 調査レポート
 │   ├── gramaddict-research-01-overview.md
 │   ├── gramaddict-research-02-config.md
 │   ├── gramaddict-research-03-troubleshooting.md
@@ -47,10 +55,11 @@ ls -la Work/ | tail -10
 │   ├── gramaddict-research-05-plugins-architecture.md
 │   ├── gramaddict-research-06-core-engine.md
 │   ├── gramaddict-research-07-device-facade.md
-│   └── skill-test-report.md   # スキルテスト結果
+│   ├── skill-test-report.md     # スキルテスト結果
+│   └── skill-overlap-analysis.md # スキル重複分析
 ├── README.md
-├── test_bot.py                # テスト用スクリプト
-└── CLAUDE.md                  # ← イマココ
+├── test_bot.py                  # テスト用スクリプト
+└── CLAUDE.md                    # ← イマココ
 ```
 
 ## 使用可能なスキル
@@ -76,12 +85,20 @@ ls -la Work/ | tail -10
       "WebSearch",
       "WebFetch(domain:*)",
       "Bash(git *)",
+      "Bash(gh *)",
       "Bash(ls *)",
       "Bash(cat *)",
       "Bash(echo *)",
-      "Bash(rm .github/ISSUES/*.md)",
-      "Bash(mv .github/ISSUES/*.md .github/ISSUES/archived/)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(python *)",
+      "Bash(pip *)",
       "Read(//**)"
+    ],
+    "ask": [
+      "Bash(sudo *)",
+      "Bash(adb *)",
+      "Bash(kill *)"
     ]
   }
 }
@@ -91,6 +108,8 @@ ls -la Work/ | tail -10
 
 - **Instagram ボットは実際には実行できません**（Android デバイスが必要）。このリポジトリは調査と知識の整理が目的
 - `test_bot.py` はスキルテスト用のモック。実際の GramAddict コードではない
-- `gh` CLI がインストールされていれば、Issue 作成に使用可能
+- `gh` CLI で GitHub Issues / PR を操作可能（`gh auth login` で認証）
 - Python 3.10 は GramAddict 非対応。3.6〜3.9 を使用
 - スキル SKILL.md のバージョン情報は `pip3 show gramaddict` で確認して更新すること
+- Issue 草案は `.github/ISSUES/archived/` に保存済み（GitHub 上に登録済み）
+- セッション再開時は `bash .claude/init_session.sh` を推奨

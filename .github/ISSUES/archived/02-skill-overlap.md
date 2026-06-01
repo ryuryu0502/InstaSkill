@@ -27,6 +27,7 @@ code-review
 - review だけは差別化が困難 → code-review に統合
 
 ## タスク
-- [ ] review スキルの code-review への統合可否を確認
-- [ ] simplify の --refactor モード化を検討
-- [ ] 不要スキルの非表示設定 (`skillOverrides`) を検討
+- [x] review スキルの code-review への統合可否を確認 → Work/skill-overlap-analysis.md
+- [ ] simplify の --refactor モード化を検討（ビルトインのためプロジェクト側で設定）
+- [x] 不要スキルの非表示設定 (`skillOverrides`) を検討 → Work/skill-overlap-analysis.md
+- [ ] skillOverrides の動作検証（実機確認）

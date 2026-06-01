@@ -15,6 +15,17 @@ GramAddict Instagram 自動化ボットの完全調査レポート & Claude Code
 ```bash
 # スキルファイル
 .claude/skills/gramaddict/SKILL.md
+
+# 設定テンプレート
+.claude/skills/gramaddict/templates/config.yml
+.claude/skills/gramaddict/templates/filters.yml
+.claude/skills/gramaddict/templates/comments_list.txt
+
+# バージョン確認
+bash .claude/skills/gramaddict/scripts/check_version.sh
+
+# セッション再開時の初期化
+bash .claude/init_session.sh
 ```
 
 ### セッション再開（他の Claude Code に引き継ぐ場合）
@@ -22,18 +33,17 @@ GramAddict Instagram 自動化ボットの完全調査レポート & Claude Code
 プロジェクトルートで Claude Code を起動し、以下のように指示してください：
 
 ```
-CLAUDE.md を読んで状況を把握し、.github/ISSUES/ のタスクを進めてください。
+CLAUDE.md を読んで状況を把握し、GitHub Issues の残タスクを確認して進めてください。
 ```
 
 **状況別の初回プロンプト:**
 
 | 目的 | プロンプト |
 |------|-----------|
-| 前回の続き | `CLAUDE.md を読んで状況を把握し、.github/ISSUES/ の未完了タスクを確認して進めてください。` |
-| Issue 登録 | `CLAUDE.md を読んでプロジェクトを把握してください。.github/ISSUES/*.md を GitHub Issues に登録してください。` |
-| 特定タスク | `CLAUDE.md を読んでください。.github/ISSUES/02-skill-overlap.md の重複整理を進めてください。` |
-| 現状分析 | `CLAUDE.md と Work/skill-test-report.md を読んで現状と次にやるべきことを教えてください。` |
+| 前回の続き | `CLAUDE.md を読んで状況を把握し、GitHub Issues の未完了タスクを確認して進めてください。` |
+| 現状分析 | `CLAUDE.md と Work/skill-test-report.md と Work/skill-overlap-analysis.md を読んで現状を教えてください。` |
 | GramAddict 質問 | `CLAUDE.md を読んでプロジェクトを把握した上で、GramAddict の設定方法を教えてください。` |
+| セッション初期化 | `bash .claude/init_session.sh を実行してから状況を教えてください。` |
 
 > **ポイント**: 必ず最初に「CLAUDE.md を読んで」と明示すると確実です。
 
@@ -51,18 +61,19 @@ CLAUDE.md を読んで状況を把握し、.github/ISSUES/ のタスクを進め
 | `gramaddict-research-06-core-engine.md` | SessionState、ResourceID (103要素)、ナビゲーション、ScrollEndDetector |
 | `gramaddict-research-07-device-facade.md` | デバイス抽象化層、画面録画（リングバッファ）、UIビュー (18クラス)、テスト構造 |
 | `skill-test-report.md` | 全14スキルの実動テスト結果、コードレビュー検証、改善提案 |
+| `skill-overlap-analysis.md` | 4スキル重複分析と統合提案 |
 
-### スキル改善 Issue 草案
+### スキル改善 Issue
 
-管理外ではありますが、`.github/ISSUES/` に GitHub Issues に登録するための草案があります：
+以下の Issue を GitHub に登録済みです（[Issues ページ](https://github.com/ryuryu0502/InstaSkill/issues) を参照）。草案は `.github/ISSUES/archived/` に保存されています。
 
-| # | 内容 | ファイル |
-|---|------|---------|
-| 1 | 全スキル実動テストレポート | `.github/ISSUES/01-skill-test-report.md` |
-| 2 | code-review/review/simplify/security-review の重複整理 | `.github/ISSUES/02-skill-overlap.md` |
-| 3 | settings.local.json 権限設定の最適化 | `.github/ISSUES/03-permission-optimization.md` |
-| 4 | gramaddict カスタムスキル強化提案 | `.github/ISSUES/04-gramaddict-skill-enhancement.md` |
-| 5 | セッション切断後の再開手順の標準化 | `.github/ISSUES/05-session-resume-guide.md` |
+| # | 内容 | GitHub |
+|---|------|--------|
+| 1 | 全スキル実動テストレポート | [#1](https://github.com/ryuryu0502/InstaSkill/issues/1) |
+| 2 | code-review/review/simplify/security-review の重複整理 | [#2](https://github.com/ryuryu0502/InstaSkill/issues/2) |
+| 3 | settings.local.json 権限設定の最適化 | [#3](https://github.com/ryuryu0502/InstaSkill/issues/3) |
+| 4 | gramaddict カスタムスキル強化提案 | [#4](https://github.com/ryuryu0502/InstaSkill/issues/4) |
+| 5 | セッション切断後の再開手順の標準化 | [#5](https://github.com/ryuryu0502/InstaSkill/issues/5) |
 
 ### 調査ボリューム
 

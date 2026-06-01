@@ -11,8 +11,10 @@ Instagram API を使わず実際のアプリ UI を操作するため、API ベ�
 
 - **リポジトリ**: https://github.com/GramAddict/bot
 - **最新バージョン**: 3.2.12 (2024-03-22)
+- **更新確認**: `pip3 show gramaddict | grep Version` または `bash .claude/skills/gramaddict/scripts/check_version.sh`
 - **テスト済み Instagram**: 300.0.0.29.110
-- **Python**: 3.6+ (3.10 は非対応)
+- **Python**: 3.6〜3.9（3.10+ は非対応）
+- **Android**: 5.0〜14 対応（Android 15 は未検証）
 - **ドキュメント**: https://docs.gramaddict.org
 
 ## 前提条件
@@ -342,6 +344,57 @@ gramaddict run --config "C:\Users\My Name\bot\config.yml"
 
 `total-crashes-limit` を確認（デフォルト5）。ログでクラッシュ原因を特定。
 
+### 9. "Session expired" エラー
+
+**原因**: Instagram のセッションCookieが期限切れ
+**対処**:
+1. デバイスで手動ログアウト → 再ログイン
+2. `sessions.json` を削除して再実行
+3. アプリキャッシュを消去（設定 → アプリ → Instagram → キャッシュを消去）
+4. 2FA 有効アカウントは特に発生しやすい。週1回の手動ログインを推奨
+
+### 10. "Action Blocked" からの復旧
+
+**原因**: 短期間の過剰アクションでInstagramから一時制限
+**対処**:
+1. **即時停止**: ボットを48時間完全停止
+2. **手動で通常利用**: アプリを手動で開き、いいねやフォローを控えめに実施
+3. **設定見直し**: 再開時に全数値を50%減らす:
+   ```yaml
+   # 制限を緩和した設定
+   interactions-count: 15-20
+   total-likes-limit: 50-70
+   total-follows-limit: 15-25
+   follow-percentage: 15-20
+   ```
+4. **予防**: `working-hours` を厳守、`shuffle-jobs: true`、`truncate-sources: 2-3`
+
+### 11. 2要素認証（2FA）が有効なアカウント
+
+**問題**: 2FA 有効アカウントでは、セッション期限切れ後に手動ログインが必要
+**対処**:
+- GramAddict は 2FA を自動解決できない
+- 長期運用には 2FA をオフにするか、アプリパスワード方式を検討
+- 代替: 2FA 無効のサブアカウントを作成して運用
+- `sessions.json` のバックアップを取っておくと、削除後に再ログイン不要な場合あり
+
+### 12. uiautomator2 が Instagram の新しいUIで要素を見つけられない
+
+**問題**: Instagram アップデートで UI 要素の ResourceID が変更されると、ボタンクリックや画面遷移が失敗する
+**対処**:
+1. `allow-untested-ig-version: true` を設定
+2. `gramaddict dump` で現在の画面をダンプし、新しい ResourceID を確認
+3. 必要に応じてコアモジュールの ResourceID マッピングを更新
+4. Instagram の自動アップデートをオフに推奨:
+   - Play Store → Instagram → 三点メニュー → 自動更新をオフ
+
+### 13. 画面ロックパターン/PIN でのエラー
+
+`screen-sleep: true` が効かない場合:
+- **物理デバイス**: 設定 → セキュリティ → 画面ロック → なし に一時変更
+- **エミュレータ**: 画面ロックなしで設定
+- **回避策**: タスク起動前に手動で画面ロックを解除した状態で開始
+
 ## Termux スマホ単独実行
 
 ```bash
@@ -434,15 +487,56 @@ GramAddict/
 - **ResourceID 複合セレクタ**: `|` 区切りで UI バージョン差異を吸収
 - **リングバッファ録画**: クラッシュ時のみ直近30秒を保存
 
-## エミュレータ別設定
+## 代替OSS比較
 
-| エミュレータ | プラットフォーム | 備考 |
-|------------|---------------|------|
-| Memu | Windows | 推奨 |
-| LDPlayer | Windows | |
-| Android Studio AVD (Pixel 2 API 28) | macOS | 推奨 |
+| 機能 | GramAddict | InstaPy | InstagramAPI (timoniq) |
+|------|-----------|---------|----------------------|
+| **方式** | UI操作 (ADB) | Web API (非公式) | Web API (非公式) |
+| **Android 必須** | ✅ | ❌ | ❌ |
+| **検出リスク** | 低 (人間操作を模倣) | 中〜高 (APIパターン) | 高 (API利用が既知) |
+| **Python 版** | 3.6〜3.9 | 3.6〜3.12 | 3.6〜3.12 |
+| **メンテナンス** | 活発 (2024年更新) | 停滞 (2023年以降逓減) | 活発 |
+| **日本語対応** | ✅ 充実（コメント・設定） | ❌ 英語のみ | ❌ 英語のみ |
+| **複数アカウント** | ✅ | ✅ | 要実装 |
+| **フィルタリング** | ✅ 強力（比率・言語・ワード） | ✅ | ❌ |
+| **スケジューリング** | ✅ 時間枠指定 | ✅ | ❌ |
+| **設定難易度** | 中 (ADB設定が必要) | 低 | 低〜中 |
+| **プロキシ対応** | ❌ (デバイスベース) | ✅ | ✅ |
 
-エミュレータ使用時は `config.yml` の `device` にエミュレータのADBデバイスIDを指定する。
+## エミュレータ日本語設定手順
+
+### MemuPlay (Windows)
+1. Memu をインストールし、Android 7.1 以上のイメージを作成
+2. 設定 → 言語と入力 → 言語 → 日本語 を追加
+3. Google Play から Instagram をインストール
+4. ADB 接続確認: `adb connect 127.0.0.1:21503` (デフォルトポート)
+5. カスタムROM推奨（Root権限あり）
+
+### LDPlayer (Windows)
+1. LDPlayer インストール後、Android 9 イメージ推奨
+2. 設定 → 言語 → 日本語
+3. 「ルート権限を有効にする」をON（必要に応じて）
+4. ADB デフォルトポート: `adb connect 127.0.0.1:5555`
+5. Google Play から Instagram インストール
+
+### Android Studio AVD (macOS / Windows)
+```bash
+# Pixel 2 API 28 推奨
+avdmanager create avd -n pixel2_api28 -k "system-images;android-28;google_apis;x86"
+emulator -avd pixel2_api28 -no-audio -no-window
+
+# 日本語ロケール設定
+adb shell setprop persist.sys.language ja
+adb shell setprop persist.sys.country JP
+adb shell stop && adb shell start
+```
+
+### 共通: エミュレータ設定後のチェックリスト
+- [ ] `adb devices` でデバイス認識確認
+- [ ] Instagram アプリの言語が **英語** に設定されている（GramAddict 必須）
+- [ ] Google Play 開発者サービスが最新
+- [ ] 画面ロックが **なし** に設定されている
+- [ ] エミュレータ再起動後も ADB 接続が維持される
 
 ## 参考文献
 
