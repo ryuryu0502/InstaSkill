@@ -1,0 +1,25 @@
+# === プロフィールタイプ ===
+skip_if_private: false
+skip_if_public: false
+skip_business: false
+skip_non_business: false
+skip_following: true
+skip_follower: true
+skip_if_link_in_bio: false
+
+# === プロフィール統計 ===
+min_followers: 1
+max_followers: 999999
+min_followings: 1
+max_followings: 999999
+min_potency_ratio: 0
+max_potency_ratio: 999
+min_posts: 0
+mutual_friends: -1
+
+# === プロフィール文フィルター ===
+blacklist_words: []
+mandatory_words: []
+specific_alphabet: []
+biography_language: []
+biography_banned_language: []

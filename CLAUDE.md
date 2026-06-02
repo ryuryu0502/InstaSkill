@@ -104,6 +104,16 @@ bash .claude/init_session.sh
 }
 ```
 
+### スキル重複整理（skillOverrides）
+
+以下のスキルは重複のため非表示設定済み（`settings.local.json` に記述）:
+
+| スキル | 設定値 | 理由 |
+|--------|--------|------|
+| `simplify` | `off` | code-review --fix が完全カバー |
+| `review` | `off` | code-review --comment で代替 |
+| `security-review` | `user-invocable-only` | 明示呼び出し時のみ有効 |
+
 ## 注意事項
 
 - **Instagram ボットは実際には実行できません**（Android デバイスが必要）。このリポジトリは調査と知識の整理が目的

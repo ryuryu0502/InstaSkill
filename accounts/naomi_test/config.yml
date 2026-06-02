@@ -1,0 +1,39 @@
+# === 一般設定 ===
+username: yamatu.say
+app-id: com.instagram.android
+allow-untested-ig-version: true
+screen-sleep: true
+speed-multiplier: 1
+close-apps: false
+restart-atx-agent: true
+shuffle-jobs: false               # 1回だけなのでランダム化不要
+truncate-sources: 1               # 1ソースのみ使用
+
+# === インタラクションジョブ ===
+# 渡辺直美のフォロワーから1人フォロー
+blogger-followers: [watanabenaomi703]
+
+# === ジョブ修飾子 ===
+watch-video-time: 5-10
+watch-photo-time: 2-3
+
+# === ソース制限（最小限） ===
+interactions-count: 1              # 1回だけ
+likes-count: 0                     # いいね不要
+follow-percentage: 100             # 必ずフォロー
+follow-limit: 1                    # 最大1フォロー
+skipped-list-limit: 1
+
+# === セッション総制限 ===
+total-likes-limit: 0
+total-follows-limit: 1
+total-interactions-limit: 1
+
+# === セッション終了条件 ===
+end-if-follows-limit-reached: true  # 1回フォローしたら終了
+
+# === スケジューリング ===
+working-hours: [0-24]
+time-delta: 0
+repeat: 1
+total-sessions: 1
